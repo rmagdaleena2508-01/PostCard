@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Postcards — beautiful places, credited</title>
+  <!-- X's video CDN (video.twimg.com) returns 403 when a Referer from another site is sent.
+       Embeds below opt back in with their own referrerpolicy. -->
+  <meta name="referrer" content="no-referrer" />
+  <meta name="description" content="The world's most beautiful places, filmed by the people who found them." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="nav" id="nav">
+    <a class="brand" href="#top" aria-label="Postcards, back to top">
+      <span class="brand-mark" aria-hidden="true"></span>Postcards
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#collection">Collection</a>
+      <a href="#about">Credits</a>
+    </nav>
+    <button class="btn btn-dark" type="button" data-open-add>Add a video</button>
+  </header>
+
+  <main id="top">
+    <!-- Hero: white background, centred type -->
+    <section class="hero" aria-labelledby="hero-title">
+      <p class="pill rise" style="--d:0s">
+        <span class="pill-dot" aria-hidden="true"></span>
+        <span id="count-pill">A personal collection</span>
+      </p>
+      <h1 id="hero-title" class="rise-soft" style="--d:.1s">
+        I discovered <em>the beautiful places of the world</em> through social media.
+      </h1>
+      <p class="hero-sub rise" style="--d:.2s">
+        The world's most beautiful places, filmed by the people who found them.
+      </p>
+      <div class="hero-ctas rise" style="--d:.3s">
+        <a class="btn btn-primary" href="#collection">See the collection</a>
+        <button class="btn btn-ghost" type="button" data-open-add>Save a new place</button>
+      </div>
+      <p class="hero-micro rise" style="--d:.4s">
+        Every video belongs to its creator. Tap their name to visit them.
+      </p>
+    </section>
+
+    <!-- Collection -->
+    <section class="collection" id="collection" aria-labelledby="col-title">
+      <div class="section-intro">
+        <h2 id="col-title">Places I want to <em>go back to.</em></h2>
+        <p class="section-sub">Saved from Instagram, TikTok and YouTube. Pick a place, press play, and say thanks to the person who filmed it.</p>
+      </div>
+
+      <div class="filters" role="tablist" aria-label="Filter by place" id="filters"></div>
+
+      <ul class="grid" id="grid" aria-live="polite"></ul>
+
+      <div class="empty" id="empty" hidden>
+        <div class="empty-card">
+          <p class="empty-title">Your first postcard goes here.</p>
+          <p class="empty-text">Found a video of Table Mountain, a quiet beach, or a forest at sunrise? Paste the link and it lands here, credited to the person who filmed it.</p>
+          <button class="btn btn-primary" type="button" data-open-add>Add your first video</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Credits promise -->
+    <section class="about" id="about" aria-labelledby="about-title">
+      <h2 id="about-title">Made by them. <em>Kept by me.</em></h2>
+      <ul class="promises">
+        <li><strong>Credit first.</strong> Every card names the creator and links to their original post.</li>
+        <li><strong>Played from the source.</strong> Videos play through the platform's own embed. Nothing is downloaded or re-uploaded.</li>
+        <li><strong>Easy to take down.</strong> If a creator asks, one click removes their video.</li>
+      </ul>
+      <div class="about-tools">
+        <button class="btn btn-ghost" type="button" id="export">Export collection</button>
+        <label class="btn btn-ghost">Import<input type="file" id="import" accept="application/json" hidden /></label>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Postcards. A collection of places, not a claim to them. All videos © their creators.</p>
+  </footer>
+
+  <!-- Player -->
+  <dialog class="player" id="player" aria-labelledby="player-place">
+    <div class="player-inner">
+      <div class="player-frame" id="player-frame"></div>
+      <aside class="player-side">
+        <p class="player-country" id="player-country"></p>
+        <h3 id="player-place"></h3>
+        <p class="player-note" id="player-note"></p>
+        <div class="credit">
+          <span class="credit-label">Filmed by</span>
+          <a id="player-creator" target="_blank" rel="noopener"></a>
+        </div>
+        <a class="btn btn-primary btn-block" id="player-source" target="_blank" rel="noopener">Watch the original</a>
+        <button class="btn btn-ghost btn-block" type="button" id="player-remove">Remove from collection</button>
+      </aside>
+      <button class="icon-btn close" type="button" data-close aria-label="Close player">×</button>
+    </div>
+  </dialog>
+
+  <!-- Add form -->
+  <dialog class="sheet" id="add" aria-labelledby="add-title">
+    <form method="dialog" id="add-form" novalidate>
+      <h3 id="add-title">Save a place</h3>
+      <p class="sheet-sub">Paste a link from Instagram, TikTok, X, YouTube or Vimeo, or a direct video file.</p>
+
+      <label class="field">
+        <span>Video link</span>
+        <input name="url" type="url" required placeholder="https://www.instagram.com/reel/…" autocomplete="off" />
+        <small class="hint" id="url-hint">We'll play it from the original post.</small>
+      </label>
+      <div class="row">
+        <label class="field">
+          <span>Place</span>
+          <input name="place" required placeholder="Chapman's Peak" />
+        </label>
+        <label class="field">
+          <span>City or country</span>
+          <input name="country" required placeholder="Cape Town, South Africa" />
+        </label>
+      </div>
+      <label class="field">
+        <span>Creator's @handle</span>
+        <input name="creator" required placeholder="@who.filmed.it" />
+        <small class="hint">The person who filmed it. Their name links to their profile.</small>
+      </label>
+      <label class="field">
+        <span>Original post link <em>(optional)</em></span>
+        <input name="post" type="url" placeholder="https://x.com/who.filmed.it/status/…" autocomplete="off" />
+        <small class="hint">Where you found it. Used for "Watch the original" when you paste a direct video file.</small>
+      </label>
+      <label class="field">
+        <span>A note to future me <em>(optional)</em></span>
+        <input name="note" placeholder="Go at golden hour." />
+      </label>
+      <p class="form-error" id="form-error" role="alert"></p>
+      <div class="sheet-actions">
+        <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+        <button class="btn btn-primary" type="submit">Save postcard</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
