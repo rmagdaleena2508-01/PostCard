@@ -109,13 +109,34 @@ p { text-wrap: pretty; }
 
 /* ---------- Hero (white) ---------- */
 .hero {
-  background: #FFFFFF;
+  /* Meadow photo under a soft white veil: the sky stays light so the ink headline reads,
+     and the hills and flowers show through toward the bottom. */
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.78) 38%, rgba(255,255,255,.35) 68%, rgba(255,255,255,0) 88%),
+    url("images/hero-meadow.jpg") center 70% / cover no-repeat,
+    #FFFFFF;
   min-height: 92vh;
-  padding: 168px 20px 128px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: clamp(120px, 17vh, 176px) 20px 128px;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  position: relative; isolation: isolate;
   text-align: center;
   border-radius: 0 0 28px 28px;
   box-shadow: 0 1px 0 var(--ring);
+}
+/* Soft white glow behind the text block so it reads over hills and grass */
+.hero::before {
+  content: ""; position: absolute; z-index: -1;
+  left: 50%; top: clamp(80px, 12vh, 140px);
+  width: min(1100px, 120vw); height: min(620px, 80vh);
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(255,255,255,.85), rgba(255,255,255,.55) 55%, rgba(255,255,255,0));
+  pointer-events: none;
+}
+.hero .hero-micro {
+  color: var(--ink-78);
+  padding: 6px 12px; border-radius: 9999px;
+  background: rgba(255,255,255,.62);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
 }
 .pill {
   display: inline-flex; align-items: center; gap: 8px; margin: 0 0 24px;
@@ -300,7 +321,13 @@ dialog[open] { animation: rise-soft .5s var(--ease-out) both; }
 
 @media (max-width: 560px) {
   .nav-links { display: none; }
-  .hero { padding: 128px 20px 80px; min-height: 86vh; }
+  .hero {
+    padding: 128px 20px 80px; min-height: 86vh;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.8) 45%, rgba(255,255,255,.4) 75%, rgba(255,255,255,0) 95%),
+      url("images/hero-meadow-sm.jpg") 62% 100% / cover no-repeat,
+      #FFFFFF;
+  }
   .collection, .about { padding-top: 80px; padding-bottom: 72px; }
 }
 @media (prefers-reduced-motion: reduce) {
